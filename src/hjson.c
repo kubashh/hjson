@@ -27,7 +27,7 @@
 
 
 // HJson error
-u8* err = NULL;
+char* err = NULL;
 
 
 // HJson structure
@@ -36,13 +36,13 @@ typedef struct HJson {
     struct HJson *next; // or only child as array?
 
     // Item name string for object childs
-    u8* name;
+    char* name;
 
     int type;
 
     union {
-        f64 number;
-        u8* string;
+        double number;
+        char* string;
         // An array or object item will have a child pointer pointing to a chain of the items in the array/object.
         struct HJson *child;
     };
@@ -52,7 +52,7 @@ typedef struct {
     void* allocated;
 } SaveAllocation;
 
-typedef u8* ParseBuffer;
+typedef char* ParseBuffer;
 
 // #define HJson_INVALID_RET(input_buf) \
 //     HJson* node = HJson_NewAlloc(); \
@@ -62,12 +62,12 @@ typedef u8* ParseBuffer;
 
 
 // Lib headers Api
-HJson* HJson_parse(u8* src);
+HJson* HJson_parse(char* src);
 void HJson_free(HJson* json);
-u8* HJson_stringify(const HJson* json);
+char* HJson_stringify(const HJson* json);
 int HJson_ArrayLen(const HJson* array);
 HJson* HJson_ArrayAt(HJson* array, int index);
-HJson* HJson_ObjectGet(const HJson* object, const u8* name);
+HJson* HJson_ObjectGet(const HJson* object, const char* name);
 
 
 // Api
@@ -114,13 +114,13 @@ HJson* HJson_CreateFalse() {
 HJson* HJson_CreateTrue() {
     return HJson_CreateBool(true);
 }
-HJson* HJson_CreateNumber(f64 number) {
+HJson* HJson_CreateNumber(double number) {
     HJson* json = HJson_NewAlloc();
     json->type = HJson_Number;
     json->number = number;
     return json;
 }
-HJson* HJson_CreateString(u8* string) {
+HJson* HJson_CreateString(char* string) {
     HJson* json = HJson_NewAlloc();
     json->type = HJson_String;
     json->string = string;
@@ -171,7 +171,7 @@ HJson* HJson_ArrayAt(HJson* array, int index) {
 }
 
 
-HJson* HJson_ObjectGet(const HJson* object, const u8* name) {
+HJson* HJson_ObjectGet(const HJson* object, const char* name) {
     if((object == NULL) || (name == NULL)) return NULL;
 
     HJson *current_element = object->child;
@@ -187,7 +187,7 @@ void HJson_ArrayAdd(HJson* array, HJson* node) {
     HJson_ArrayAt(array, HJson_ArrayLen(array) - 1)->next = node;
 }
 
-void HJson_ObjectAddFalse(HJson* object, const u8* name) {
+void HJson_ObjectAddFalse(HJson* object, const char* name) {
     
 }
 
@@ -229,7 +229,7 @@ static inline void skipWhitespace(ParseBuffer* const input_buf) {
 // HJson
 
 static inline HJson* parse_number(ParseBuffer* const input_buf) {
-    u8 len = 1;
+    int len = 1;
     while(true) {
         switch((*input_buf)[len]) {
             case '0':
@@ -255,7 +255,7 @@ static inline HJson* parse_number(ParseBuffer* const input_buf) {
 
 loop_end:
 
-    u8 buf[len + 1];
+    char buf[len + 1];
 
     memcpy(buf, *input_buf, len);
     buf[len] = '\0';
@@ -271,7 +271,7 @@ loop_end:
 
 // Need validated string
 // TODO utf chars like \u3243
-static inline u8* parse_string(ParseBuffer* const input_buf) {
+static inline char* parse_string(ParseBuffer* const input_buf) {
     (*input_buf)++; // skip "
     // allocate bigger? and realocate?
     int skipped_bytes = 0;
@@ -284,10 +284,10 @@ static inline u8* parse_string(ParseBuffer* const input_buf) {
         src_len++;
     }
 
-    u8* out = malloc(src_len - skipped_bytes + 1);
+    char* out = malloc(src_len - skipped_bytes + 1);
 
-    u8* out_ptr = out;
-    u8* src_end = (*input_buf) + src_len;
+    char* out_ptr = out;
+    char* src_end = (*input_buf) + src_len;
     while(*input_buf < src_end) {
         if(**input_buf != '\\') {
             *(out_ptr++) = *(*input_buf)++;
@@ -311,7 +311,7 @@ static inline u8* parse_string(ParseBuffer* const input_buf) {
                     return NULL;
 
                 default:
-                    u8 buf[64];
+                    char buf[64];
                     sprintf(buf, "Error at parse_string (HJson): invalid escape char: %c\n", (*input_buf)[1]);
                     err = duplicate_string(buf);
                     HJson_MoveBufEndinput_buf(input_buf);
@@ -365,7 +365,7 @@ static inline HJson* parse_object(ParseBuffer* const input_buf) {
     HJson* cur_item = NULL;
 
     while(**input_buf != '}' && **input_buf != '\0') {
-        u8* name = parse_string(input_buf);
+        char* name = parse_string(input_buf);
         (*input_buf)++;
         skipWhitespace(input_buf);
         cur_item = parse_value(input_buf);
@@ -470,8 +470,8 @@ invalid:
 
 // HJson_stringify
 
-static u8* HJson_stringify_value(const HJson* json, u8 indent) {
-    u8* buf;
+static char* HJson_stringify_value(const HJson* json, int indent) {
+    char* buf;
     switch(json->type) {
         // false
         case HJson_False: {
@@ -498,7 +498,7 @@ static u8* HJson_stringify_value(const HJson* json, u8 indent) {
         case HJson_Number: {
             buf = malloc(32);
             snprintf(buf, 32, "%f", json->number);
-            u8 *p = buf + strlen(buf) - 1;
+            char *p = buf + strlen(buf) - 1;
             while (*p == '0') *p-- = '\0';
 
             // remove trailing dot if needed
@@ -530,15 +530,15 @@ static u8* HJson_stringify_value(const HJson* json, u8 indent) {
             buf = malloc(len + 2); // + 2 for "]\0"
             buf[0] = '[';
             for(HJson* child = json->child; child != NULL; child = child->next) {
-                u8* value = HJson_stringify_value(child, indent);
+                char* value = HJson_stringify_value(child, indent);
                 int len2 = strlen(value);
-                buf = (u8*)realloc(buf, len + len2 + 2); // + 2 for ", "
+                buf = (char*)realloc(buf, len + len2 + 2); // + 2 for ", "
 
                 // TODO if to long add \n and indent => realocate
                 // if(indent + len + len2 <= INDENT_LEVEL) {
-                //     buf = (u8*)realloc(buf, len + len2 + 2); // + 2 for ", "
+                //     buf = (char*)realloc(buf, len + len2 + 2); // + 2 for ", "
                 // } else {
-                //     buf = (u8*)realloc(buf, len + (indent + 1) + len2 + 2); // + 2 for ", ",
+                //     buf = (char*)realloc(buf, len + (indent + 1) + len2 + 2); // + 2 for ", ",
                 //     printf("deb: %c\n", value[1]);
                 //     // buf[len++ - 1] = '\n';
                 // }
@@ -573,11 +573,11 @@ static u8* HJson_stringify_value(const HJson* json, u8 indent) {
             buf[0] = '{';
             buf[1] = '\n';
             for(HJson* child = json->child; child != NULL; child = child->next) {
-                const u8* name = child->name;
+                const char* name = child->name;
                 const int name_len = strlen(name);
-                u8* value = HJson_stringify_value(child, indent + INDENT_LEVEL);
+                char* value = HJson_stringify_value(child, indent + INDENT_LEVEL);
                 const int value_len = strlen(value);
-                buf = (u8*)realloc(buf, len + indent + value_len + name_len + 2 + 2 + 2 + 1 + 10); // needs extra 10,
+                buf = (char*)realloc(buf, len + indent + value_len + name_len + 2 + 2 + 2 + 1 + 10); // needs extra 10,
                     // I guess for formatting numbers
 
                 // Indent
@@ -618,13 +618,13 @@ static u8* HJson_stringify_value(const HJson* json, u8 indent) {
 
 
 // Init allocate in memory
-HJson* HJson_parse(u8* src) {
+HJson* HJson_parse(char* src) {
     return parse_value(&src);
 }
 
 // Init allocate in memory from file path. NULL == no file
-HJson* HJson_parse_file(const u8* path) {
-    u8* file_text = read_file_alloc(path);
+HJson* HJson_parse_file(const char* path) {
+    char* file_text = read_file_alloc(path);
     if(!file_text) return NULL;
     HJson* json = HJson_parse(file_text);
     free(file_text);
@@ -633,7 +633,7 @@ HJson* HJson_parse_file(const u8* path) {
 
 
 // Stringify allocate json string
-u8* HJson_stringify(const HJson* json) {
+char* HJson_stringify(const HJson* json) {
     return HJson_stringify_value(json, INDENT_LEVEL);
 }
 

@@ -7,18 +7,18 @@
 // #define TEST_FMT
 #define TEST_PARSERS_PERFORMANCE
 
-#define TEST_REPEAT_COUNT 1000
-const u8* TEST_READ_PATHS[] = {
-    // TEST_DIR "bool.json",
+#define TEST_REPEAT_COUNT 1
+const char* TEST_READ_PATHS[] = {
+    TEST_DIR "bool.json",
     TEST_DIR "number.json",
-    // TEST_DIR "string.json",
-    // TEST_DIR "array.json",
-    // TEST_DIR "object.json",
-    // TEST_DIR "realCase.json",
-    // TEST_DIR "realCase2.json",
-    // TEST_DIR "realCase3.json",
-    // TEST_DIR "realCase5-configs.json",
-    // TEST_DIR "big.json",
+    TEST_DIR "string.json",
+    TEST_DIR "array.json",
+    TEST_DIR "object.json",
+    TEST_DIR "realCase.json",
+    TEST_DIR "realCase2.json",
+    TEST_DIR "realCase3.json",
+    TEST_DIR "realCase4-configs.json",
+    TEST_DIR "big.json",
     NULL
 };
 
@@ -29,29 +29,29 @@ typedef struct {
     time_t cjson;
 } Benchmark;
 
-static inline void printerr(u8* str) {
+static inline void printerr(char* str) {
     printf("\x1b[31mError: %s\x1b[0m\n", str);
 }
 
 
-void test_results_print(u8* label, time_t HJson_time, time_t cJSON_time) {
-    u8 HJson_buf[14], cJSON_buf[14], dif_buf[14];
-    measure_fmt(HJson_buf, HJson_time);
-    measure_fmt(cJSON_buf, cJSON_time);
-    f64 dif = 100.0 * ((f64)cJSON_time / (f64)HJson_time - 1);
+void test_results_print(char* label, time_t hjson_time, time_t cjson_time) {
+    char hjson_buf[14], cjson_buf[14], dif_buf[14];
+    measure_fmt(hjson_buf, hjson_time);
+    measure_fmt(cjson_buf, cjson_time);
+    double dif = 100.0 * ((double)cjson_time / (double)hjson_time - 1);
     printf("%s x%d:\n  HJson: %s\n  cJSON: %s\n  Difference: %s%.2f%%\x1b[0m\n",
-        label, TEST_REPEAT_COUNT, HJson_buf, cJSON_buf, cJSON_time < HJson_time ? "\x1b[31m" : "", dif);
+        label, TEST_REPEAT_COUNT, hjson_buf, cjson_buf, cjson_time < hjson_time ? "\x1b[31m" : "", dif);
 }
 
 
 void test_json_parsers_performance() {
     time_t hjson_all = 0, cjson_all = 0;
 
-    u8 const* filename;
-    time_t start, HJson_time, cJSON_time;
-    u32 i = 0, j;
+    char const* filename;
+    time_t start, hjson_time, cjson_time;
+    int i = 0, j;
     while((filename = TEST_READ_PATHS[i]) != NULL) {
-        u8* file_text = read_file_alloc(filename);
+        char* file_text = read_file_alloc(filename);
         if(!file_text) {
             printerr("No such file!\n");
             continue;
@@ -64,8 +64,8 @@ void test_json_parsers_performance() {
 
             HJson_free(json);
         }
-        HJson_time = measure_end(start);
-        hjson_all += HJson_time;
+        hjson_time = measure_end(start);
+        hjson_all += hjson_time;
 
         // cJSON parse/free
         start = performance_now();
@@ -74,13 +74,13 @@ void test_json_parsers_performance() {
 
             cJSON_Delete(json2);
         }
-        cJSON_time = measure_end(start);
-        cjson_all += cJSON_time;
+        cjson_time = measure_end(start);
+        cjson_all += cjson_time;
 
         // Print info
-        u8 buf[50];
-        sprintf(buf, "%s (%.3fkb)", filename, (f64)strlen(file_text) / 1000.0);
-        test_results_print(buf, HJson_time, cJSON_time);
+        char buf[50];
+        sprintf(buf, "%s (%.3fkb)", filename, (double)strlen(file_text) / 1000.0);
+        test_results_print(buf, hjson_time, cjson_time);
 
         free(file_text);
         i++;
@@ -98,7 +98,7 @@ void test_fmt() {
         return;
     }
 
-    u8* json_str = HJson_stringify(json);
+    char* json_str = HJson_stringify(json);
     printf("%s\n", json_str);
 
     free(json_str);
@@ -108,7 +108,7 @@ void test_fmt() {
 void test_hjson() {
     // Parsing - no comments
     HJson* tmp;
-    u8* file_text = read_file_alloc(TEST_DIR "hjson.json");
+    char* file_text = read_file_alloc(TEST_DIR "hjson.json");
     if(!file_text) {
         printerr("No such file!\n");
         return;
@@ -138,7 +138,7 @@ void test_hjson() {
 
     // Parsing with comments
 
-    u8* file_text_com = read_file_alloc(TEST_DIR "comments.json");
+    char* file_text_com = read_file_alloc(TEST_DIR "comments.json");
     if(!file_text_com) {
         printerr("No such file!\n");
         return;
@@ -170,7 +170,7 @@ void test_hjson() {
     printf("Testing HJson parsing with comments done.\n");
 }
 
-u8 main() {
+int main() {
 #ifdef TEST_HJSON
     test_hjson();
 #endif
