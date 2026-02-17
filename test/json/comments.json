@@ -1,0 +1,20 @@
+{
+  "type": "test_comments", // some comment
+  "keys": {
+    "k1": 10 /* old C comment */
+  }, // // /* /*  ak()                             \      \q                    comment    long
+  "obj": {
+    "key1": 1.2 /* Where ASM? */
+  },
+  "arr": [12, 3 /* agresive comment */] /* fdfd */,
+  "arr_com": [
+    /* testing    */
+    /* all        */
+    // possible
+    // scenario's
+  ],
+  "null": null,
+  "bool": false, // I love C - lang
+  "true": true,
+  "num": 6.25 /* fdf */ /* */
+} /* JS */ /* TS */

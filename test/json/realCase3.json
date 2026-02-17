@@ -1,0 +1,120 @@
+{
+  "booking_id": "BOOK123456789",
+  "guest": {
+    "guest_id": "GUEST987654321",
+    "first_name": "Emily",
+    "last_name": "Johnson",
+    "email": "emily.johnson@example.com",
+    "phone": "+9876543210",
+    "address": {
+      "street": "789 Pine Street",
+      "city": "Los Angeles",
+      "state": "CA",
+      "zip": "90001",
+      "country": "USA"
+    },
+    "passport_number": "A12345678",
+    "loyalty_program_member": true,
+    "loyalty_points": 1200
+  },
+  "booking_details": {
+    "check_in": "2025-12-25T15:00:00Z",
+    "check_out": "2025-12-30T12:00:00Z",
+    "number_of_guests": 2,
+    "special_requests": "Non-smoking room, high floor",
+    "room_reservation": [
+      {
+        "room_type": "Deluxe King Suite",
+        "room_id": "R001",
+        "bed_type": "King",
+        "capacity": 2,
+        "price_per_night": 299.99,
+        "total_price": 1499.95,
+        "amenities": [
+          "Wi-Fi",
+          "Mini Bar",
+          "Flat-Screen TV",
+          "Air Conditioning",
+          "Room Service",
+          "Ocean View"
+        ],
+        "room_view": "Ocean",
+        "floor": 10
+      }
+    ],
+    "additional_services": [
+      {
+        "service_name": "Spa Treatment",
+        "service_type": "Relaxation Massage",
+        "service_cost": 150.0,
+        "service_date": "2025-12-26T10:00:00Z"
+      },
+      {
+        "service_name": "Private Dinner",
+        "service_type": "Chef’s Special Dinner for Two",
+        "service_cost": 250.0,
+        "service_date": "2025-12-27T19:00:00Z"
+      },
+      {
+        "service_name": "Excursion",
+        "service_type": "Guided City Tour",
+        "service_cost": 120.0,
+        "service_date": "2025-12-28T08:00:00Z"
+      }
+    ]
+  },
+  "payment_details": {
+    "payment_method": "Credit Card",
+    "payment_status": "Paid",
+    "transaction_id": "TXN987654321",
+    "amount_paid": 2120.95,
+    "payment_date": "2025-12-23T14:00:00Z",
+    "billing_information": {
+      "card_type": "MasterCard",
+      "card_number_last4": "5678",
+      "expiration_date": "06/2026",
+      "billing_address": {
+        "street": "789 Pine Street",
+        "city": "Los Angeles",
+        "state": "CA",
+        "zip": "90001",
+        "country": "USA"
+      }
+    }
+  },
+  "check_in_status": {
+    "status": "Confirmed",
+    "check_in_time": "2025-12-25T15:00:00Z",
+    "room_ready": true,
+    "front_desk_contact": "+9876543210"
+  },
+  "guest_feedback": {
+    "rating": 5,
+    "review": "Excellent stay! The room had an amazing view and the service was top-notch. The spa treatment was extremely relaxing and the city tour was informative. Would highly recommend!",
+    "feedback_date": "2025-12-30T11:30:00Z"
+  },
+  "hotel": {
+    "hotel_id": "HOTEL456789",
+    "name": "Oceanview Resort",
+    "location": {
+      "address": "123 Beachfront Avenue",
+      "city": "Santa Monica",
+      "state": "CA",
+      "zip": "90401",
+      "country": "USA"
+    },
+    "rating": 4.7,
+    "facilities": [
+      "24/7 Reception",
+      "Free Wi-Fi",
+      "Swimming Pool",
+      "Fitness Center",
+      "Restaurant",
+      "Spa and Wellness Center",
+      "Event Hall"
+    ],
+    "contact_number": "+1234567890",
+    "email": "reservations@oceanviewresort.com",
+    "website": "https://www.oceanviewresort.com"
+  }
+}

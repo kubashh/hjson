@@ -1,0 +1,115 @@
+{
+  "order_id": "ORD123456789",
+  "customer": {
+    "customer_id": "CUST987654321",
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "johndoe@example.com",
+    "phone": "+1234567890",
+    "shipping_address": {
+      "street": "123 Elm St",
+      "city": "Springfield",
+      "state": "IL",
+      "zip": "62701",
+      "country": "USA"
+    },
+    "billing_address": {
+      "street": "456 Oak St",
+      "city": "Springfield",
+      "state": "IL",
+      "zip": "62701",
+      "country": "USA"
+    },
+    "loyalty_points": 500
+  },
+  "order_details": {
+    "order_date": "2025-12-23T14:32:00Z",
+    "status": "Processing",
+    "total_amount": 249.99,
+    "currency": "USD",
+    "items": [
+      {
+        "product_id": "PROD001",
+        "name": "Wireless Headphones",
+        "quantity": 1,
+        "price_per_unit": 99.99,
+        "total_price": 99.99,
+        "category": "Electronics",
+        "sku": "WH001",
+        "manufacturer": "TechBrand",
+        "product_url": "https://www.example.com/product/wireless-headphones"
+      },
+      {
+        "product_id": "PROD002",
+        "name": "Bluetooth Speaker",
+        "quantity": 1,
+        "price_per_unit": 79.99,
+        "total_price": 79.99,
+        "category": "Electronics",
+        "sku": "BS001",
+        "manufacturer": "SoundWave",
+        "product_url": "https://www.example.com/product/bluetooth-speaker"
+      },
+      {
+        "product_id": "PROD003",
+        "name": "Smartphone Case",
+        "quantity": 2,
+        "price_per_unit": 24.99,
+        "total_price": 49.98,
+        "category": "Accessories",
+        "sku": "SC001",
+        "manufacturer": "CaseMate",
+        "product_url": "https://www.example.com/product/smartphone-case"
+      }
+    ],
+    "discounts": [
+      {
+        "discount_code": "SUMMER2025",
+        "description": "10% off electronics",
+        "discount_amount": 18.0
+      }
+    ],
+    "taxes": [
+      {
+        "tax_name": "Sales Tax",
+        "tax_rate": 0.08,
+        "tax_amount": 16.8
+      }
+    ],
+    "shipping": {
+      "method": "Standard Shipping",
+      "cost": 9.99,
+      "estimated_delivery": "2025-12-30"
+    }
+  },
+  "payment_details": {
+    "payment_method": "Credit Card",
+    "payment_status": "Completed",
+    "transaction_id": "TXN123456789",
+    "amount_paid": 249.99,
+    "payment_date": "2025-12-23T14:34:00Z",
+    "billing_information": {
+      "card_type": "Visa",
+      "card_number_last4": "1234",
+      "expiration_date": "12/2026",
+      "billing_address": {
+        "street": "456 Oak St",
+        "city": "Springfield",
+        "state": "IL",
+        "zip": "62701",
+        "country": "USA"
+      }
+    }
+  },
+  "delivery_status": {
+    "status": "Pending",
+    "expected_shipping_date": "2025-12-24",
+    "tracking_number": "TRACK123456789",
+    "carrier": "FedEx"
+  },
+  "customer_feedback": {
+    "rating": 4,
+    "review": "Great products, fast delivery. Would definitely recommend.",
+    "feedback_date": "2025-12-23T15:00:00Z"
+  }
+}

@@ -1,0 +1,429 @@
+{
+  "type": "test_realCase-configs",
+  "tsconfig": {
+    "compilerOptions": {
+      "lib": ["ESNext"],
+      "target": "ESNext",
+      "module": "Preserve",
+      "moduleDetection": "force",
+      "jsx": "react-jsx",
+      "allowJs": true,
+      "moduleResolution": "bundler",
+      "allowImportingTsExtensions": true,
+      "verbatimModuleSyntax": true,
+      "noEmit": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "noFallthroughCasesInSwitch": true,
+      "noUncheckedIndexedAccess": true,
+      "noImplicitOverride": true,
+      "noUnusedLocals": false,
+      "noUnusedParameters": false,
+      "noPropertyAccessFromIndexSignature": false
+    }
+  },
+  "package.json (Node.js)": {
+    "name": "my-node-app",
+    "version": "1.0.0",
+    "description": "A sample Node.js application",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js",
+      "test": "echo \"No tests specified\" && exit 0"
+    },
+    "keywords": ["node", "express", "javascript"],
+    "author": "Your Name",
+    "license": "MIT",
+    "dependencies": {
+      "express": "^4.17.1",
+      "mongoose": "^5.10.9"
+    },
+    "devDependencies": {
+      "eslint": "^7.0.0",
+      "prettier": "^2.2.1"
+    },
+    "engines": {
+      "node": ">=14.0.0"
+    },
+    "browserslist": [">0.2%", "not dead", "not op_mini all"]
+  },
+  "pytest.json (Python Testing)": {
+    "testpaths": ["tests"],
+    "addopts": "--maxfail=5 --disable-warnings",
+    "python_files": "test_*.py",
+    "python_functions": "test_*",
+    "markers": {
+      "smoke": "run the smoke tests",
+      "regression": "run the regression tests"
+    },
+    "log_cli": true,
+    "log_cli_level": "INFO",
+    "log_cli_format": "%(asctime)s %(name)s %(levelname)s: %(message)s"
+  },
+  "_config.json (Jekyll, Ruby)": {
+    "title": "My Cool Site",
+    "description": "This is my personal blog powered by Jekyll",
+    "url": "https://www.mysite.com",
+    "baseurl": "/blog",
+    "author": {
+      "name": "John Doe",
+      "email": "johndoe@example.com"
+    },
+    "theme": "minima",
+    "plugins": ["jekyll-feed", "jekyll-seo-tag"],
+    "exclude": ["README.md", "LICENSE.md"],
+    "markdown": {
+      "kramdown": {
+        "input": "GFM"
+      }
+    },
+    "social": {
+      "twitter": "@johndoe",
+      "facebook": "https://facebook.com/johndoe"
+    }
+  },
+  "application.json (Spring Boot, Java)": {
+    "spring": {
+      "application": {
+        "name": "MySpringBootApp"
+      },
+      "datasource": {
+        "url": "jdbc:mysql://localhost:3306/mydb",
+        "username": "root",
+        "password": "password123",
+        "driver-class-name": "com.mysql.cj.jdbc.Driver"
+      },
+      "jpa": {
+        "hibernate": {
+          "ddl-auto": "update",
+          "show-sql": true
+        },
+        "properties": {
+          "hibernate.dialect": "org.hibernate.dialect.MySQL5Dialect"
+        }
+      },
+      "server": {
+        "port": 8080,
+        "context-path": "/api"
+      }
+    }
+  },
+  "Go Configuration": {
+    "server": {
+      "host": "localhost",
+      "port": 8080
+    },
+    "database": {
+      "host": "localhost",
+      "port": 5432,
+      "user": "admin",
+      "password": "secret",
+      "dbname": "mydb"
+    },
+    "log": {
+      "level": "debug",
+      "file": "/var/log/myapp.log"
+    },
+    "features": {
+      "auth": true,
+      "caching": true,
+      "notifications": false
+    }
+  },
+  "webpack.config.json (Webpack)": {
+    "entry": "./src/index.js",
+    "output": {
+      "path": "./dist",
+      "filename": "bundle.js"
+    },
+    "module": {
+      "rules": [
+        {
+          "test": "/.js$/",
+          "exclude": "/node_modules/",
+          "use": {
+            "loader": "babel-loader"
+          }
+        }
+      ]
+    },
+    "plugins": [
+      {
+        "plugin": "HtmlWebpackPlugin",
+        "options": {
+          "template": "./src/index.html"
+        }
+      }
+    ],
+    "resolve": {
+      "extensions": [".js", ".json"]
+    }
+  },
+  ".prettierrc.json (Prettier)": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "printWidth": 80,
+    "arrowParens": "always",
+    "bracketSpacing": true
+  },
+  "docker-compose.json (Docker Compose)": {
+    "version": "3",
+    "services": {
+      "web": {
+        "image": "nginx",
+        "ports": ["80:80"],
+        "volumes": ["./html:/usr/share/nginx/html"]
+      },
+      "db": {
+        "image": "postgres",
+        "environment": {
+          "POSTGRES_USER": "user",
+          "POSTGRES_PASSWORD": "password"
+        }
+      }
+    }
+  },
+  "AWS CloudFormation (JSON)": {
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "My AWS infrastructure",
+    "Resources": {
+      "MyEC2Instance": {
+        "Type": "AWS::EC2::Instance",
+        "Properties": {
+          "InstanceType": "t2.micro",
+          "ImageId": "ami-0abcdef1234567890",
+          "KeyName": "my-key-pair",
+          "SecurityGroupIds": ["sg-12345678"]
+        }
+      },
+      "MyBucket": {
+        "Type": "AWS::S3::Bucket",
+        "Properties": {
+          "BucketName": "my-unique-bucket-name"
+        }
+      }
+    },
+    "Outputs": {
+      "InstanceId": {
+        "Description": "EC2 Instance ID",
+        "Value": {
+          "Ref": "MyEC2Instance"
+        }
+      }
+    }
+  },
+  "Unity3D Configuration": {
+    "name": "MyGame",
+    "version": "1.0.0",
+    "description": "A fun game built in Unity",
+    "buildSettings": {
+      "targetPlatform": "PC",
+      "outputDirectory": "./builds"
+    },
+    "playerSettings": {
+      "resolution": {
+        "width": 1920,
+        "height": 1080
+      },
+      "quality": "High",
+      "fullscreen": true
+    },
+    "assets": {
+      "scenes": ["MainScene", "Level1"],
+      "textures": ["texture1.png", "texture2.png"]
+    }
+  },
+  "Terraform (JSON)": {
+    "provider": {
+      "aws": {
+        "region": "us-east-1"
+      }
+    },
+    "resource": {
+      "aws_instance": {
+        "my_instance": {
+          "ami": "ami-0abcdef1234567890",
+          "instance_type": "t2.micro"
+        }
+      }
+    }
+  },
+  ".vscode/settings.json (Visual Studio Code)": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": false,
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
+    },
+
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "files.exclude": {
+      "**/.git": true,
+      "**/.DS_Store": true,
+      "**/node_modules": true
+    },
+
+    "javascript.validate.enable": false,
+    "typescript.preferences.importModuleSpecifier": "relative",
+
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "all",
+    "prettier.printWidth": 80,
+
+    "python.defaultInterpreterPath": ".venv/bin/python",
+    "python.formatting.provider": "black",
+    "python.linting.enabled": true,
+
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "workflow.json (GitHub Actions – JSON variant)": {
+    "name": "Node CI",
+    "on": {
+      "push": {
+        "branches": ["main", "develop"]
+      },
+      "pull_request": {
+        "branches": ["main"]
+      }
+    },
+    "jobs": {
+      "build": {
+        "runs-on": "ubuntu-latest",
+        "steps": [
+          {
+            "name": "Checkout repository",
+            "uses": "actions/checkout@v3"
+          },
+          {
+            "name": "Setup Node.js",
+            "uses": "actions/setup-node@v3",
+            "with": {
+              "node-version": "18"
+            }
+          },
+          {
+            "name": "Install dependencies",
+            "run": "npm ci"
+          },
+          {
+            "name": "Run tests",
+            "run": "npm test"
+          },
+          {
+            "name": "Build project",
+            "run": "npm run build"
+          }
+        ]
+      }
+    }
+  },
+  "MongoDB Configuration / Document (JSON)": {
+    "net": {
+      "port": 27017,
+      "bindIp": "127.0.0.1"
+    },
+    "storage": {
+      "dbPath": "/data/db",
+      "journal": {
+        "enabled": true
+      }
+    },
+    "security": {
+      "authorization": "enabled"
+    },
+    "systemLog": {
+      "destination": "file",
+      "path": "/var/log/mongodb/mongod.log",
+      "logAppend": true
+    }
+  },
+  "firebase.json (Firebase)": {
+    "hosting": {
+      "public": "dist",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "source": "/assets/**",
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=31536000"
+            }
+          ]
+        }
+      ]
+    },
+    "functions": {
+      "source": "functions"
+    },
+    "emulators": {
+      "hosting": {
+        "port": 5000
+      },
+      "functions": {
+        "port": 5001
+      }
+    }
+  },
+  "Kubernetes (JSON manifest)": {
+    "apiVersion": "apps/v1",
+    "kind": "Deployment",
+    "metadata": {
+      "name": "web-app",
+      "labels": {
+        "app": "web"
+      }
+    },
+    "spec": {
+      "replicas": 3,
+      "selector": {
+        "matchLabels": {
+          "app": "web"
+        }
+      },
+      "template": {
+        "metadata": {
+          "labels": {
+            "app": "web"
+          }
+        },
+        "spec": {
+          "containers": [
+            {
+              "name": "web-container",
+              "image": "nginx:latest",
+              "ports": [
+                {
+                  "containerPort": 80
+                }
+              ],
+              "resources": {
+                "limits": {
+                  "cpu": "500m",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "250m",
+                  "memory": "128Mi"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

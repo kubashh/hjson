@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "generatedAt": "2025-12-23T12:34:56Z",
+    "generator": "ChatGPT",
+    "version": 1,
+    "description": "Complex JSON for performance and correctness testing",
+    "flags": [true, false, true, false]
+  },
+  "config": {
+    "limits": {
+      "maxUsers": 1000000,
+      "timeoutMs": 2500,
+      "thresholds": [0.1, 0.5, 0.9, 0.99]
+    },
+    "features": {
+      "featureA": true,
+      "featureB": false,
+      "featureC": {
+        "enabled": true,
+        "modes": ["fast", "safe", "debug"],
+        "parameters": {
+          "alpha": 0.000123,
+          "beta": 987654321,
+          "gamma": -42
+        }
+      }
+    }
+  },
+  "users": [
+    {
+      "id": 1,
+      "username": "user_000001",
+      "email": "user_000001@example.com",
+      "active": true,
+      "roles": ["admin", "editor"],
+      "profile": {
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "age": 34,
+        "address": {
+          "street": "123 Main St",
+          "city": "Metropolis",
+          "country": "Neverland",
+          "geo": { "lat": 37.7749, "lon": -122.4194 }
+        }
+      },
+      "preferences": {
+        "language": "en",
+        "timezone": "UTC",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "push": true
+        }
+      },
+      "history": [
+        { "action": "login", "timestamp": 1700000001 },
+        { "action": "update_profile", "timestamp": 1700000301 },
+        { "action": "logout", "timestamp": 1700000601 }
+      ]
+    },
+    {
+      "id": 2,
+      "username": "user_000002",
+      "email": "user_000002@example.com",
+      "active": false,
+      "roles": ["viewer"],
+      "profile": {
+        "firstName": "Bob",
+        "lastName": "Johnson",
+        "age": 29,
+        "address": {
+          "street": "456 Side Ave",
+          "city": "Gotham",
+          "country": "Neverland",
+          "geo": { "lat": 40.7128, "lon": -74.006 }
+        }
+      },
+      "preferences": {
+        "language": "fr",
+        "timezone": "CET",
+        "notifications": {
+          "email": false,
+          "sms": true,
+          "push": false
+        }
+      },
+      "history": []
+    }
+  ],
+  "datasets": [
+    {
+      "name": "dataset_alpha",
+      "records": [
+        {
+          "recordId": "a1",
+          "values": [1, 2, 3, 4, 5],
+          "matrix": [
+            [1, 0, 0],
+            [0, 1, 0],
+            [0, 0, 1]
+          ]
+        },
+        {
+          "recordId": "a2",
+          "values": [10, 20, 30, 40, 50],
+          "matrix": [
+            [2, 4, 6],
+            [8, 10, 12],
+            [14, 16, 18]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "dataset_beta",
+      "records": [
+        {
+          "recordId": "b1",
+          "values": [],
+          "matrix": []
+        }
+      ]
+    }
+  ],
+  "logs": {
+    "level": "debug",
+    "entries": [
+      {
+        "id": "log_0001",
+        "message": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "context": {
+          "thread": "worker-1",
+          "retry": 0,
+          "success": true
+        }
+      },
+      {
+        "id": "log_0002",
+        "message": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+        "context": {
+          "thread": "worker-2",
+          "retry": 3,
+          "success": false,
+          "error": {
+            "code": 503,
+            "details": "Service unavailable",
+            "causes": ["timeout", "upstream_failure", "circuit_open"]
+          }
+        }
+      }
+    ]
+  },
+  "deeplyNested": {
+    "level1": {
+      "level2": {
+        "level3": {
+          "level4": {
+            "level5": {
+              "level6": {
+                "level7": {
+                  "level8": {
+                    "level9": {
+                      "level10": "end"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

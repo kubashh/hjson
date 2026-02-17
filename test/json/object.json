@@ -1,0 +1,215 @@
+{
+  "type": "test_object",
+  "data": {
+    "target": {
+      "id": 123456789,
+      "name": "TestObject",
+      "attributes": {
+        "size": "large",
+        "color": "blue",
+        "shape": "rectangle",
+        "weight": { "value": 250, "unit": "kg" },
+        "metadata": {
+          "created": "2023-01-01T00:00:00Z",
+          "updated": "2025-12-23T12:00:00Z",
+          "tags": [
+            "example",
+            "test",
+            "json",
+            "performance",
+            "benchmarking",
+            "large"
+          ]
+        },
+        "location": {
+          "coordinates": { "lat": 40.7128, "lon": -74.006 },
+          "address": "123 Test St, Test City, TC, 10001",
+          "landmarks": ["Test Park", "Sample Plaza"]
+        },
+        "details": {
+          "subdetails": {
+            "subid": 98765,
+            "info": "This is a deep nested structure for testing purposes, filled with large amounts of data to simulate real-world scenarios."
+          },
+          "extra": {
+            "field1": "value1",
+            "field2": "value2",
+            "field3": "value3",
+            "field4": "value4",
+            "field5": "value5",
+            "field6": "value6",
+            "field7": "value7",
+            "field8": "value8",
+            "field9": "value9",
+            "field10": "value10",
+            "field11": "value11",
+            "field12": "value12"
+          }
+        },
+        "items": [
+          {
+            "itemId": 1,
+            "name": "Item A",
+            "price": { "value": 19.99, "currency": "USD" }
+          },
+          {
+            "itemId": 2,
+            "name": "Item B",
+            "price": { "value": 29.99, "currency": "USD" }
+          },
+          {
+            "itemId": 3,
+            "name": "Item C",
+            "price": { "value": 39.99, "currency": "USD" }
+          },
+          {
+            "itemId": 4,
+            "name": "Item D",
+            "price": { "value": 49.99, "currency": "USD" }
+          },
+          {
+            "itemId": 5,
+            "name": "Item E",
+            "price": { "value": 59.99, "currency": "USD" }
+          },
+          {
+            "itemId": 6,
+            "name": "Item F",
+            "price": { "value": 69.99, "currency": "USD" }
+          },
+          {
+            "itemId": 7,
+            "name": "Item G",
+            "price": { "value": 79.99, "currency": "USD" }
+          },
+          {
+            "itemId": 8,
+            "name": "Item H",
+            "price": { "value": 89.99, "currency": "USD" }
+          },
+          {
+            "itemId": 9,
+            "name": "Item I",
+            "price": { "value": 99.99, "currency": "USD" }
+          },
+          {
+            "itemId": 10,
+            "name": "Item J",
+            "price": { "value": 109.99, "currency": "USD" }
+          }
+        ],
+        "nestedArray": [
+          {
+            "id": 100,
+            "name": "Entry 1",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 101,
+            "name": "Entry 2",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 102,
+            "name": "Entry 3",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 103,
+            "name": "Entry 4",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 104,
+            "name": "Entry 5",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 105,
+            "name": "Entry 6",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 106,
+            "name": "Entry 7",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 107,
+            "name": "Entry 8",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 108,
+            "name": "Entry 9",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          },
+          {
+            "id": 109,
+            "name": "Entry 10",
+            "details": { "field1": "info", "field2": "data", "field3": "more" }
+          }
+        ],
+        "flags": {
+          "isActive": true,
+          "isVerified": false,
+          "isArchived": false,
+          "isDeleted": false
+        },
+        "meta": {
+          "version": 1.2,
+          "owner": "Admin",
+          "permissions": ["read", "write", "execute"],
+          "logs": [
+            {
+              "timestamp": "2023-01-01T12:00:00Z",
+              "action": "create",
+              "user": "admin",
+              "ip": "192.168.0.1"
+            },
+            {
+              "timestamp": "2023-01-02T14:30:00Z",
+              "action": "update",
+              "user": "admin",
+              "ip": "192.168.0.2"
+            },
+            {
+              "timestamp": "2023-01-03T16:45:00Z",
+              "action": "delete",
+              "user": "admin",
+              "ip": "192.168.0.3"
+            }
+          ]
+        },
+        "nestedObject": {
+          "level1": {
+            "field1": "value1",
+            "field2": "value2",
+            "field3": "value3",
+            "sublevel": {
+              "field1": "subvalue1",
+              "field2": "subvalue2",
+              "subsublevel": {
+                "field1": "subsubvalue1",
+                "field2": "subsubvalue2"
+              }
+            }
+          }
+        }
+      }
+    },
+    "otherData": {
+      "key": "value",
+      "list": [
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20
+      ],
+      "flag": true,
+      "anotherObject": {
+        "id": 555,
+        "type": "secondary",
+        "details": { "fieldA": "dataA", "fieldB": "dataB", "fieldC": "dataC" }
+      }
+    }
+  },
+  "emptyObjects": [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+}
