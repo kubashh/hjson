@@ -1,0 +1,6 @@
+{
+  "type": "test_small",
+  "num": 1.3,
+  "bool": true,
+  "arr": [10, {}]
+}

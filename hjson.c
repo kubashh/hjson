@@ -1,7 +1,10 @@
 #pragma once
+#include "stdlib.h"
+#include "stdbool.h"
+#include "stdio.h"
+#include "string.h"
 
-#include "cross_util.c"
-
+#define HJson_Version "0.4.0"
 
 // json types
 #define HJson_Invalid       0b00000000
@@ -18,8 +21,8 @@
 #define HJson_RefrenceMask  0b00110000
 
 
-#define HJson_NewAlloc() (HJson*)calloc(1, sizeof(HJson))
-#define HJson_MoveBufEndinput_buf(input_buf) ((*input_buf) += strlen(*input_buf))
+#define HJson_new_alloc() (HJson*)calloc(1, sizeof(HJson))
+#define HJson_move_input_buf_end(input_buf) ((*input_buf) += strlen(*input_buf))
 
 
 #define INDENT_LEVEL 4
@@ -33,7 +36,7 @@ char* err = NULL;
 // HJson structure
 typedef struct HJson {
     // next for walking on array/object linked list
-    struct HJson *next; // or only child as array?
+    struct HJson *next;
 
     // Item name string for object childs
     char* name;
@@ -43,103 +46,106 @@ typedef struct HJson {
     union {
         double number;
         char* string;
-        // An array or object item will have a child pointer pointing to a chain of the items in the array/object.
+        // An array or object item will have a child pointer pointing to a chain of the items in the array/object
         struct HJson *child;
     };
 } HJson;
 
-typedef struct {
-    void* allocated;
-} SaveAllocation;
+// typedef struct {
+//     void* allocated;
+// } SaveAllocation;
 
 typedef char* ParseBuffer;
 
-// #define HJson_INVALID_RET(input_buf) \
-//     HJson* node = HJson_NewAlloc(); \
-//     node->type = HJson_Invalid; \
-//     HJson_MoveBufEndinput_buf(input_buf); \
-//     return node;
-
 
 // Lib headers Api
+bool HJson_is_false(const HJson* json);
+bool HJson_is_true(const HJson* json);
+bool HJson_is_bool(const HJson* json);
+bool HJson_is_number(const HJson* json);
+bool HJson_is_string(const HJson* json);
+bool HJson_is_array(const HJson* json);
+bool HJson_is_object(const HJson* json);
+bool HJson_has_childs(const HJson* json);
+
+HJson* HJson_create_null();
+HJson* HJson_create_bool(bool value);
+HJson* HJson_create_number(double number);
+HJson* HJson_create_string(char* string);
+HJson* HJson_create_array();
+HJson* HJson_create_object();
+
 HJson* HJson_parse(char* src);
 void HJson_free(HJson* json);
 char* HJson_stringify(const HJson* json);
-int HJson_ArrayLen(const HJson* array);
-HJson* HJson_ArrayAt(HJson* array, int index);
-HJson* HJson_ObjectGet(const HJson* object, const char* name);
+int HJson_array_len(const HJson* array);
+HJson* HJson_array_at(HJson* array, int index);
+HJson* HJson_object_get(const HJson* object, const char* name);
 
 
 // Api
 
-bool HJson_IsFalse(const HJson* json) {
+bool HJson_is_false(const HJson* json) {
     return json && json->type == HJson_False;
 }
-bool HJson_IsTrue(const HJson* json) {
+bool HJson_is_true(const HJson* json) {
     return json && json->type == HJson_True;
 }
-bool HJson_IsBool(const HJson* json) {
+bool HJson_is_bool(const HJson* json) {
     return json && (json->type & HJson_BoolMask);
 }
-bool HJson_IsNumber(const HJson* json) {
+bool HJson_is_number(const HJson* json) {
     return json && json->type == HJson_Number;
 }
-bool HJson_IsString(const HJson* json) {
+bool HJson_is_string(const HJson* json) {
     return json && json->type == HJson_String;
 }
-bool HJson_IsArray(const HJson* json) {
+bool HJson_is_array(const HJson* json) {
     return json && json->type == HJson_Array;
 }
-bool HJson_IsObject(const HJson* json) {
+bool HJson_is_object(const HJson* json) {
     return json && json->type == HJson_Object;
 }
-bool HJson_IsHaveChild(const HJson* json) {
+bool HJson_has_childs(const HJson* json) {
     return json && (json->type & (HJson_Array | HJson_Object)) && json->child;
 }
 
-HJson* HJson_CreateNull() {
-    HJson* json = HJson_NewAlloc();
+HJson* HJson_create_null() {
+    HJson* json = HJson_new_alloc();
     json->type = HJson_Null;
     return json;
 }
-HJson* HJson_CreateBool(bool value) {
-    HJson* json = HJson_NewAlloc();
-    HJson* test = malloc(sizeof(HJson));
+HJson* HJson_create_bool(bool value) {
+    HJson* json = HJson_new_alloc();
     json->type = value ? HJson_True : HJson_False;
     return json;
 }
-HJson* HJson_CreateFalse() {
-    return HJson_CreateBool(false);
-}
-HJson* HJson_CreateTrue() {
-    return HJson_CreateBool(true);
-}
-HJson* HJson_CreateNumber(double number) {
-    HJson* json = HJson_NewAlloc();
+HJson* HJson_create_number(double number) {
+    HJson* json = HJson_new_alloc();
     json->type = HJson_Number;
     json->number = number;
     return json;
 }
-HJson* HJson_CreateString(char* string) {
-    HJson* json = HJson_NewAlloc();
+HJson* HJson_create_string(char* string) {
+    HJson* json = HJson_new_alloc();
     json->type = HJson_String;
     json->string = string;
     return json;
 }
-HJson* HJson_CreateArray() {
-    HJson* json = HJson_NewAlloc();
+HJson* HJson_create_array() {
+    HJson* json = HJson_new_alloc();
     json->type = HJson_Array;
     return json;
 }
-HJson* HJson_CreateObject() {
-    HJson* json = HJson_NewAlloc();
+HJson* HJson_create_object() {
+    HJson* json = HJson_new_alloc();
     json->type = HJson_Object;
     return json;
 }
 
 
 // for array/object
-int HJson_ArrayLen(const HJson* array) {
+int HJson_array_len(const HJson* array) {
     HJson *child = NULL;
     int size = 0;
 
@@ -158,7 +164,7 @@ int HJson_ArrayLen(const HJson* array) {
 
 
 // for array/object
-HJson* HJson_ArrayAt(HJson* array, int index) {
+HJson* HJson_array_at(HJson* array, int index) {
     if(array == NULL) return NULL;
 
     HJson* current_child = array->child;
@@ -171,7 +177,7 @@ HJson* HJson_ArrayAt(HJson* array, int index) {
 }
 
 
-HJson* HJson_ObjectGet(const HJson* object, const char* name) {
+HJson* HJson_object_get(const HJson* object, const char* name) {
     if((object == NULL) || (name == NULL)) return NULL;
 
     HJson *current_element = object->child;
@@ -183,12 +189,12 @@ HJson* HJson_ObjectGet(const HJson* object, const char* name) {
 }
 
 // object/array
-void HJson_ArrayAdd(HJson* array, HJson* node) {
-    HJson_ArrayAt(array, HJson_ArrayLen(array) - 1)->next = node;
+void HJson_array_add(HJson* array, HJson* node) {
+    HJson_array_at(array, HJson_array_len(array) - 1)->next = node;
 }
 
-void HJson_ObjectAddFalse(HJson* object, const char* name) {
-    
+void HJson_object_add_false(HJson* object, const char* name) {
+    // TODO ???
 }
 
 
@@ -200,7 +206,7 @@ static HJson* parse_value(ParseBuffer* const input_buf);
 
 
 // Helpers
-static inline void skipWhitespace(ParseBuffer* const input_buf) {
+static inline void skip_whitespace(ParseBuffer* const input_buf) {
     while(**input_buf != '\0' && (**input_buf == ' ' || **input_buf == '\n')) {
         (*input_buf)++;
     }
@@ -211,18 +217,28 @@ static inline void skipWhitespace(ParseBuffer* const input_buf) {
         switch(**input_buf) {
             case '/': {
                 while(*(*input_buf)++ != '\n');
-                skipWhitespace(input_buf);
+                skip_whitespace(input_buf);
                 break;
             }
 
             case '*': {
                 while(*(*input_buf)++ != '*' || **input_buf != '/');
                 (*input_buf)++;
-                skipWhitespace(input_buf);
+                skip_whitespace(input_buf);
                 break;
             }
         }
     }
+}
+
+// Duplicate string and allocate
+char* duplicate_string(const char* str) {
+    if (str == NULL) return NULL;
+    char* dup_str = malloc(strlen(str) + 1);
+    if (dup_str) {
+        strcpy(dup_str, str);
+    }
+    return dup_str;
 }
 
 
@@ -262,7 +278,7 @@ loop_end:
 
     *input_buf += len;
 
-    HJson* node = HJson_NewAlloc();
+    HJson* node = HJson_new_alloc();
     node->type = HJson_Number;
     node->number = atof(buf);
     return node;
@@ -307,14 +323,14 @@ static inline char* parse_string(ParseBuffer* const input_buf) {
                     break;
                 case 'u':
                     err = duplicate_string("Error at parse_string (HJson): unicode not supported yet!\n");
-                    HJson_MoveBufEndinput_buf(input_buf);
+                    HJson_move_input_buf_end(input_buf);
                     return NULL;
 
                 default:
                     char buf[64];
                     sprintf(buf, "Error at parse_string (HJson): invalid escape char: %c\n", (*input_buf)[1]);
                     err = duplicate_string(buf);
-                    HJson_MoveBufEndinput_buf(input_buf);
+                    HJson_move_input_buf_end(input_buf);
                     return NULL;
             }
             (*input_buf) += 2;
@@ -330,9 +346,9 @@ static inline char* parse_string(ParseBuffer* const input_buf) {
 
 static inline HJson* parse_array(ParseBuffer* const input_buf) {
     (*input_buf)++; // skip '['
-    HJson* array = HJson_NewAlloc();
+    HJson* array = HJson_new_alloc();
     array->type = HJson_Array;
-    skipWhitespace(input_buf);
+    skip_whitespace(input_buf);
     HJson* prev = NULL;
     HJson* cur_item = NULL;
 
@@ -344,9 +360,9 @@ static inline HJson* parse_array(ParseBuffer* const input_buf) {
             prev->next = cur_item;
         }
 
-        skipWhitespace(input_buf);
+        skip_whitespace(input_buf);
         if(**input_buf == ',') (*input_buf)++;
-        skipWhitespace(input_buf);
+        skip_whitespace(input_buf);
         prev = cur_item;
     }
 
@@ -358,16 +374,16 @@ static inline HJson* parse_array(ParseBuffer* const input_buf) {
 
 static inline HJson* parse_object(ParseBuffer* const input_buf) {
     (*input_buf)++; // skip '{'
-    HJson* object = HJson_NewAlloc();
+    HJson* object = HJson_new_alloc();
     object->type = HJson_Object;
-    skipWhitespace(input_buf);
+    skip_whitespace(input_buf);
     HJson* prev = NULL;
     HJson* cur_item = NULL;
 
     while(**input_buf != '}' && **input_buf != '\0') {
         char* name = parse_string(input_buf);
         (*input_buf)++;
-        skipWhitespace(input_buf);
+        skip_whitespace(input_buf);
         cur_item = parse_value(input_buf);
         cur_item->name = name;
         // allocate string name
@@ -377,9 +393,9 @@ static inline HJson* parse_object(ParseBuffer* const input_buf) {
             prev->next = cur_item;
         }
 
-        skipWhitespace(input_buf);
+        skip_whitespace(input_buf);
         if(**input_buf == ',') (*input_buf)++;
-        skipWhitespace(input_buf);
+        skip_whitespace(input_buf);
         prev = cur_item;
     }
 
@@ -390,12 +406,12 @@ static inline HJson* parse_object(ParseBuffer* const input_buf) {
 
 
 static HJson* parse_value(ParseBuffer* const input_buf) {
-    skipWhitespace(input_buf);
+    skip_whitespace(input_buf);
 
     switch(**input_buf) {
         // string
         case '"': {
-            HJson* node = HJson_NewAlloc();
+            HJson* node = HJson_new_alloc();
             node->type = HJson_String;
             node->string = parse_string(input_buf);
             return node;
@@ -430,7 +446,7 @@ static HJson* parse_value(ParseBuffer* const input_buf) {
         case 't': {
             if(strncmp(*input_buf + 1, "rue", 3) == 0) {
                 (*input_buf) += 4;
-                HJson* node = HJson_NewAlloc();
+                HJson* node = HJson_new_alloc();
                 node->type = HJson_True;
                 return node;
             }
@@ -441,7 +457,7 @@ static HJson* parse_value(ParseBuffer* const input_buf) {
         case 'f': {
             if(strncmp(*input_buf + 1, "alse", 4) == 0) {
                 (*input_buf) += 5;
-                HJson* node = HJson_NewAlloc();
+                HJson* node = HJson_new_alloc();
                 node->type = HJson_False;
                 return node;
             }
@@ -452,18 +468,19 @@ static HJson* parse_value(ParseBuffer* const input_buf) {
         case 'n': {
             if(strncmp(*input_buf + 1, "ull", 3) == 0) {
                 (*input_buf) += 4;
-                HJson* node = HJson_NewAlloc();
+                HJson* node = HJson_new_alloc();
                 node->type = HJson_False;
                 return node;
             }
+            goto invalid;
         }
     }
 
 invalid:
     // invalid
-    HJson* node = HJson_NewAlloc();
+    HJson* node = HJson_new_alloc();
     node->type = HJson_Invalid;
-    HJson_MoveBufEndinput_buf(input_buf);
+    HJson_move_input_buf_end(input_buf);
     return node;
 }
 
@@ -502,7 +519,7 @@ static char* HJson_stringify_value(const HJson* json, int indent) {
             while (*p == '0') *p-- = '\0';
 
             // remove trailing dot if needed
-            if (*p == '.') *p = '\0';
+            if(*p == '.') *p = '\0';
             return buf;
         }
 
@@ -624,7 +641,29 @@ HJson* HJson_parse(char* src) {
 
 // Init allocate in memory from file path. NULL == no file
 HJson* HJson_parse_file(const char* path) {
-    char* file_text = read_file_alloc(path);
+    FILE *file = fopen(path, "r");
+    if (file == NULL) return NULL;
+
+    // Move the file pointer to the end of the file to get the size
+    fseek(file, 0, SEEK_END);
+    long file_size = ftell(file);
+    fseek(file, 0, SEEK_SET);  // Move back to the beginning of the file
+
+    // Allocate memory for the file content, including space for the null terminator
+    char* file_text = (char *)malloc(file_size + 1);
+    if (file_text == NULL) {
+        perror("Failed to allocate memory");
+        fclose(file);
+        return NULL;
+    }
+
+    // Read the file contents into the allocated memory
+    size_t bytes_reed = fread(file_text, 1, file_size, file);
+    file_text[bytes_reed] = '\0';  // Null-terminate the string
+
+    // Close the file
+    fclose(file);
+
     if(!file_text) return NULL;
     HJson* json = HJson_parse(file_text);
     free(file_text);
