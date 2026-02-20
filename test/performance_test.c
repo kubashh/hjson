@@ -3,7 +3,6 @@
 #include "cross_util.c"
 
 #define TEST_DIR "test/json/"
-#define MD_OUT_PATH "bench/bench.md"
 #define OUT_BUF_MAX_LEN 1024 * 16
 char* ALL_STR = "All";
 
@@ -86,7 +85,8 @@ void make_md() {
     // Get date
     time_t now;                 // stores current time
     struct tm *local_time;      // stores broken-down local time
-    char date_buf[32];
+    char date_buf[16];
+    char md_out_path_buf[32];
 
     // Get current time
     time(&now);
@@ -96,6 +96,7 @@ void make_md() {
 
     // Format time as string
     strftime(date_buf, sizeof(date_buf), "%d %b %Y", local_time);
+    strftime(md_out_path_buf, sizeof(md_out_path_buf), "bench/bench-%d-%m-%Y.md", local_time);
 
     out_buf_len += sprintf(&out_buf[out_buf_len], "# Benchmark HJson (%s) vs cJSON (%d.%d.%d). %s\n\n",
         HJson_Version, CJSON_VERSION_MAJOR, CJSON_VERSION_MINOR, CJSON_VERSION_PATCH, date_buf);
@@ -118,7 +119,8 @@ void make_md() {
         out_buf_len += sprintf(&out_buf[out_buf_len], "| %s (%.2fKB) | %s | %s | %.2f%% |\n",
             entry.path, (double)(entry.file_size / 1000.0), hjson_buf, cjson_buf, dif);
     }
-    write_file(MD_OUT_PATH, out_buf);
+
+    write_file(md_out_path_buf, out_buf);
 }
 
 
@@ -180,7 +182,7 @@ int main(int args_len, char* args[]) {
 
     print_results();
 
-    // if(args_len > 1 && args[1][0] == 'w')
+    if(args_len > 1 && strcmp(args[1], "-m"))
         make_md();
 
     return 0;
