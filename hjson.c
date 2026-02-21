@@ -144,7 +144,7 @@ HJson* HJson_create_object() {
 }
 
 
-// for array/object
+// array/object
 int HJson_array_len(const HJson* array) {
     HJson *child = NULL;
     int size = 0;
@@ -163,7 +163,7 @@ int HJson_array_len(const HJson* array) {
 }
 
 
-// for array/object
+// array/object
 HJson* HJson_array_at(HJson* array, int index) {
     if(array == NULL) return NULL;
 
@@ -201,17 +201,19 @@ void HJson_object_add_false(HJson* object, const char* name) {
 
 
 // Utils
+
 static HJson* parse_value(ParseBuffer* const input_buf);
 
 
 
 // Helpers
+
 static inline void skip_whitespace(ParseBuffer* const input_buf) {
     while(**input_buf != '\0' && (**input_buf == ' ' || **input_buf == '\n')) {
         (*input_buf)++;
     }
 
-
+    // Handle comments
     if(**input_buf == '/') {
         (*input_buf)++;
         switch(**input_buf) {
@@ -262,6 +264,7 @@ static inline HJson* parse_number(ParseBuffer* const input_buf) {
             case '-':
             case '.':
             case 'e':
+            case 'E':
                 len++;
                 break;
             default:
@@ -286,7 +289,7 @@ loop_end:
 
 
 // Need validated string
-// TODO utf chars like \u3243
+// TODO unicode chars like \u3243
 static inline char* parse_string(ParseBuffer* const input_buf) {
     (*input_buf)++; // skip "
     // allocate bigger? and realocate?
@@ -404,7 +407,7 @@ static inline HJson* parse_object(ParseBuffer* const input_buf) {
     return object;
 }
 
-
+// Parse unknown value
 static HJson* parse_value(ParseBuffer* const input_buf) {
     skip_whitespace(input_buf);
 
@@ -487,6 +490,7 @@ invalid:
 
 // HJson_stringify
 
+// Stringify unknown value
 static char* HJson_stringify_value(const HJson* json, int indent) {
     char* buf;
     switch(json->type) {
@@ -639,27 +643,26 @@ HJson* HJson_parse(char* src) {
     return parse_value(&src);
 }
 
-// Init allocate in memory from file path. NULL == no file
+// Init allocate in memory from file path. NULL is error (no file)
 HJson* HJson_parse_file(const char* path) {
     FILE *file = fopen(path, "r");
     if (file == NULL) return NULL;
 
-    // Move the file pointer to the end of the file to get the size
+    // Move the file pointer to file end
     fseek(file, 0, SEEK_END);
     long file_size = ftell(file);
     fseek(file, 0, SEEK_SET);  // Move back to the beginning of the file
 
-    // Allocate memory for the file content, including space for the null terminator
-    char* file_text = (char *)malloc(file_size + 1);
+    // Allocate memory including space for the null terminator
+    char* file_text = malloc(file_size + 1);
     if (file_text == NULL) {
         perror("Failed to allocate memory");
         fclose(file);
         return NULL;
     }
 
-    // Read the file contents into the allocated memory
     size_t bytes_reed = fread(file_text, 1, file_size, file);
-    file_text[bytes_reed] = '\0';  // Null-terminate the string
+    file_text[bytes_reed] = '\0';  // Null-terminate
 
     // Close the file
     fclose(file);
@@ -674,6 +677,30 @@ HJson* HJson_parse_file(const char* path) {
 // Stringify allocate json string
 char* HJson_stringify(const HJson* json) {
     return HJson_stringify_value(json, INDENT_LEVEL);
+}
+
+// stringify json and write to disk
+bool HJson_stringify_write(const HJson* json, const char* path) {
+    FILE* file = fopen(path, "w");
+
+    if (file == NULL) {
+        return true;
+    }
+
+    const char* text = HJson_stringify(json);
+    if(text == NULL) {
+        return true;
+    }
+    fputs(text, file);
+    free(text);
+    fclose(file);
+}
+
+// format file from path
+bool HJson_format_file(const char* path) {
+    HJson* json = HJson_parse_file(path);
+    if(json == NULL) return true;
+    HJson_stringify_write(json, path);
 }
 
 
